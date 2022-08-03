@@ -22,10 +22,10 @@ public class ComprasDeLiderDAO {
         }
     }
     public void addCompra(String nombre, Double valor){
-        for (ComprasDeLiderVO comprasDeLiderVO : compras) {
-            if(comprasDeLiderVO == null){
+        for (int i = 0;i<10;i++) {
+            if(compras[i] == null){
                 ComprasDeLiderVO compra = new ComprasDeLiderVO(nombre, valor);
-                comprasDeLiderVO = compra;
+                compras[i] = compra;
                 break;
             }
         }

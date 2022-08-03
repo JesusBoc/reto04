@@ -3,6 +3,12 @@ package com.reto04.view;
 import com.reto04.controller.ReportesController;
 
 public class ReportesView {
+    private ReportesController controller;
+
+    public ReportesView(){
+        controller = new ReportesController();
+    }
+
     private String repitaCaracter(Character caracter, Integer veces){
         String respuesta = "";
         for (int i = 0; i < veces; i++) {
@@ -15,13 +21,10 @@ public class ReportesView {
         System.out.println(repitaCaracter('=', 36) + " LISTADO DE PROYECTOS POR BANCO "
                 + repitaCaracter('=', 37));
         if (banco != null && !banco.isBlank()) {
-            String format = "%3s %-25s %-20s %-15s %-7s %-30s";
-            System.out.println(String.format(format,
+            System.out.println(String.format("%3s %-25s %-20s %-15s %-7s %-30s",
                     "ID", "CONSTRUCTORA", "CIUDAD", "CLASIFICACION", "ESTRATO", "LIDER"));
             System.out.println(repitaCaracter('-', 105));
-            ReportesController controller = new ReportesController();
-            controller.getBancoReports(banco,format);
-            // TODO Imprimir en pantalla la información del proyecto
+            controller.getBancoReports(banco,"%3d %-25s %-20s %-15s %7d %-30s");
         }
     }
 
@@ -31,7 +34,7 @@ public class ReportesView {
         if (limiteInferior != null) {
             System.out.println(String.format("%3s %15s", "ID", "VALOR "));
             System.out.println(repitaCaracter('-', 29));
-            // TODO Imprimir en pantalla la información del total adeudado
+            controller.getProyectoReports(limiteInferior, "%3d %,15.1f");
         }
     }
 
@@ -40,5 +43,6 @@ public class ReportesView {
                         + repitaCaracter('=', 7));
         System.out.println(String.format("%-25s %15s", "LIDER", "VALOR "));
         System.out.println(repitaCaracter('-', 41));
+        controller.getComprasReports("%-25s %,15.1f");
     }
 }

@@ -9,6 +9,8 @@ import java.sql.SQLException;
 import com.reto04.model.dao.ComprasDeLiderDAO;
 import com.reto04.model.dao.DeudasPorProyectoDAO;
 import com.reto04.model.dao.ProyectoBancoDAO;
+import com.reto04.model.vo.ComprasDeLiderVO;
+import com.reto04.model.vo.DeudasPorProyectoVO;
 import com.reto04.model.vo.ProyectoBancoVO;
 import com.reto04.util.JDBCUtilities;
 
@@ -60,7 +62,7 @@ public class ReportesController {
         }
     }
 
-    public void getProyectoReports(Double limite){
+    public void getProyectoReports(Double limite, String format){
         reporteProyecto = new DeudasPorProyectoDAO();
         Connection conn = null;
         PreparedStatement stmt = null;
@@ -78,12 +80,12 @@ public class ReportesController {
                 valor = rs.getDouble("VALOR");
                 reporteProyecto.addDeuda(id, valor);
             }
-
+        showProyectoReports(format);
         } catch (SQLException e) {
             printSQLErrors(e);
         }
     }
-    public void getComprasReports(){
+    public void getComprasReports(String format){
         reporteCompras = new ComprasDeLiderDAO();
         Connection conn = null;
         Statement stmt = null;
@@ -100,10 +102,27 @@ public class ReportesController {
                 valor = rs.getDouble("VALOR");
                 reporteCompras.addCompra(nombre,valor);
             }
+            showComprasReports(format);
         } catch (SQLException e) {
             printSQLErrors(e);
         }
     }
+
+    public void showProyectoReports(String format){
+        for (DeudasPorProyectoVO deuda : reporteProyecto.getDeudas()) {
+            System.out.println(String.format(format, deuda.getId(),deuda.getValor()));
+        }
+    }
+
+    public void showComprasReports(String format){
+        for(ComprasDeLiderVO compra: reporteCompras.getCompras()){
+            if(compra == null){
+                break;
+            }
+            System.out.println(String.format(format, compra.getNombre(),compra.getValor()));
+        }
+    }
+
     private void printSQLErrors(SQLException e) {
         System.out.println("Estado: "+e.getSQLState());
         System.out.println("Mensaje: "+e.getMessage());
