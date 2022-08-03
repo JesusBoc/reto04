@@ -104,7 +104,6 @@ public class ReportesController {
             printSQLErrors(e);
         }
     }
-
     private void printSQLErrors(SQLException e) {
         System.out.println("Estado: "+e.getSQLState());
         System.out.println("Mensaje: "+e.getMessage());
